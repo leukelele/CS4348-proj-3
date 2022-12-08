@@ -1,4 +1,3 @@
-#include <iostream>
 #include <vector>
 #include <queue>
 
@@ -12,6 +11,5 @@ class RR {
   public:
     
     /* constructor */
-    RR(std::vector<Job> &jobList) {
-    }
+    RR(std::vector<Job> jobList) {}
 };  // end RR
