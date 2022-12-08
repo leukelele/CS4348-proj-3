@@ -54,31 +54,51 @@ class RR {
      */
     void circularQ() {
       unsigned int sysQuantum = quantum;                          // interval for job until preemption
-      unsigned int counter = 0;                                   // system counter
       unsigned int nextProc = admittance.front().getAdmitted();   // time of the next process
-      Job *currentJob;                                            // pointer for current process
+      unsigned int counter = 0;                                   // system counter
       
       do {
+        
+        std::cout << "\nCURRENT COUNTER: " << counter; 
+        std::cout << "\nCURRENT QUANTUM: " << sysQuantum << std::endl;
         
         /* places admitting process into ready queue at time admitted */
         if (counter == nextProc) {
           popToQ(ready, admittance);
           nextProc = admittance.front().getAdmitted();
+          
+          std::cout << "Moved " << ready.front().getName() << " into RQ" << std::endl;
         }
         
-        /* moves process at the front of queue to the back and resets quantum counter*/
+        /* moves process at the front of queue to the back and resets quantum counter */
         if (sysQuantum == 0) {
           Job temp = ready.front();
           ready.pop();
           ready.push(temp);
           sysQuantum = quantum;
+          
+          std::cout << "Moved " << temp.getName() << " to back of queue; ";
+          std::cout << "current process is now " << ready.front().getName() << std::endl;
         }
         
-        if (!ready.empty()) ready.front().processing();   // execution of process
-        if (ready.front().getLength() == 0) ready.pop();  // process removed if completed
+        if (!ready.empty()) {
+          ready.front().processing();   // execution of process
+
+          std::cout << ready.front().getName() << " now has length ";
+          std::cout << ready.front().getLength() << std::endl;
+        }
+        if (ready.front().getLength() == 0) {
+          
+          std::cout << ready.front().getName() << " completed" << std::endl;
+
+          ready.pop();  // process removed if completed
+          sysQuantum = quantum + 1;
+        }
 
         counter++;
         sysQuantum--;
       } while (!ready.empty() || !admittance.empty());
     } // end circularQ()
+    
+    void preemption() {};
 };  // end RR
