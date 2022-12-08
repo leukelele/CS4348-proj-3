@@ -1,19 +1,22 @@
 #include <iostream>
 #include <fstream>
-#include <queue>
+#include <vector>
 
 #include "Job.hpp"
 #include "RR.hpp"
 
 
-void fileToQ(std::string, std::queue<Job> &);
+void fileToQ(std::string, std::vector<Job> &);
 
 int main(int argc, char *argv[]) {
 
-  std::queue<Job> jobList;
+  /* read in file */
+  std::vector<Job> jobList;
   fileToQ(argv[1], jobList);
   
   std::string selectedAlgo = argv[2];
+
+  RR roundRobin(jobList);
   if (selectedAlgo.compare("RR")) {}
   else if (selectedAlgo.compare("SRT")) {}
   else if (selectedAlgo.compare("FB")) {}
@@ -25,12 +28,12 @@ int main(int argc, char *argv[]) {
 
 /**
  * @brief Reads from file and intiializes a Job class from the information. The class is then placed in 
- * a queue.
+ * a vector.
  * 
  * @param fileName 
  * @param jobList 
  */
-void fileToQ(std::string fileName, std::queue<Job> &jobList) {
+void fileToQ(std::string fileName, std::vector<Job> &jobList) {
 
   std::ifstream inF;
   inF.open(fileName);
@@ -47,10 +50,11 @@ void fileToQ(std::string fileName, std::queue<Job> &jobList) {
   unsigned short length;
   
   // std::cout << "reading file..." << std::endl;
+
   /* reads from file, initializes the Job, and places the Job in queue*/
   while (inF >> name >> admitted >> length) {
     Job admittingJob(name, admitted, length);
-    jobList.push(admittingJob);
+    jobList.push_back(admittingJob);
   }
 
   //std::cout << "closing file..." << std::endl;
