@@ -12,6 +12,7 @@
 
 #include "Job.hpp"
 #include "RR.hpp"
+#include "SRT.hpp"
 
 void fileToVector(std::string, std::vector<Job> &);
 void displayJobNames(std::vector<Job>);
@@ -61,12 +62,11 @@ void fileToVector(std::string fileName, std::vector<Job> &jobList) {
   char name;
   unsigned int admitted;
   unsigned int length;
-  
-  // std::cout << "reading file..." << std::endl;
+  unsigned int id = 0;
 
   /* reads from file, initializes the Job, and places the Job in vector */
   while (inF >> name >> admitted >> length) {
-    Job admittingJob(name, admitted, length);
+    Job admittingJob(name, admitted, length, id++);
     jobList.push_back(admittingJob);
   }
 
@@ -89,7 +89,8 @@ void displayJobNames(std::vector<Job> jobList) {
 } // end displayJobNames()
 
 /**
- * @brief 
+ * @brief prompts for quantum size, processes information through Round Robin algorithm,
+ * and displays result
  * 
  * @param jobList 
  */
@@ -106,6 +107,11 @@ void roundRobin(std::vector<Job> jobList) {
     if (!input.empty()) rr.requestQuantum(stoi(input));
     
     /* process and display */
+    std::cout << "\nROUND ROBIN:" << std::endl;
     displayJobNames(jobList);
     rr.circularQ();
 } // end roundRobin()
+
+void shortRemainingTime(std::vector<Job> jobList) {
+  SRT srt(jobList);
+}

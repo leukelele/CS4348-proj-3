@@ -6,14 +6,16 @@ class Job {
     char name;                // name of the job
     unsigned int admitted;    // time the job was admitted
     unsigned int length;      // length of time required for the job
+    unsigned int id;          // variable created to aid in display
 
   public:
     
     /* constructor */
-    Job(char name, unsigned int admitted, unsigned int length){
+    Job(char name, unsigned int admitted, unsigned int length, unsigned int id) {
       this->name = name;
       this->admitted = admitted;
       this->length = length;
+      this->id = id;
     }
     
     /**
@@ -36,6 +38,7 @@ class Job {
     char getName() {return name;}
     unsigned int getAdmitted() {return admitted;}
     unsigned int getLength() {return length;}
+    unsigned int getID() {return id;}
 };  // end Job
 
 #endif 

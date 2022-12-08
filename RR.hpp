@@ -3,13 +3,13 @@
 #include <queue>
 
 #include "Job.hpp"
-#include "QInteract.hpp"
+#include "popToQ.hpp"
 
 class RR {
   
   private:
     std::queue<Job> admittance; // admits the job
-    std::queue<Job> ready;      // ready queue for execution of process
+    std::queue<int> ID;         // help for displaying execution of processes
     unsigned int quantum;       // interval for process before preemption, default is 2
     
   public:
@@ -31,13 +31,13 @@ class RR {
      * @param jobList 
      */
     void acceptJobs(std::vector<Job> jobList) {
-      for (int i = 0; i < jobList.size(); i++) 
+      for (int i = 0; i < jobList.size(); i++) {
         admittance.push(jobList.at(i));
+      }
     } // end acceptJobs()
     
     /**
      * @brief assigns quantum size, default value is 2
-     * 
      */
     void requestQuantum(unsigned int size = 2) {
       quantum = size;
@@ -49,25 +49,24 @@ class RR {
      *                             * 
      *******************************/
     /**
-     * @brief 
-     * 
+     * @brief round robing algorithm, similar in concept to the first come first algorithm except all 
+     * have a set time limit before the process is moved to the back of the queue
      */
     void circularQ() {
+      std::queue<Job> ready;                                      // ready queue for execution of processes
+      std::queue<int> identifier;                                 // keep track of elements as they moved through ready queue
       unsigned int sysQuantum = quantum;                          // interval for job until preemption
       unsigned int nextProc = admittance.front().getAdmitted();   // time of the next process
       unsigned int counter = 0;                                   // system counter
       
+      /* iterates through queue, remaning on an element for the duration of the quantum, and breaks
+         when ready queue and admittance queue are empty */
       do {
-        
-        std::cout << "\nCURRENT COUNTER: " << counter; 
-        std::cout << "\nCURRENT QUANTUM: " << sysQuantum << std::endl;
         
         /* places admitting process into ready queue at time admitted */
         if (counter == nextProc) {
           popToQ(ready, admittance);
           nextProc = admittance.front().getAdmitted();
-          
-          std::cout << "Moved " << ready.front().getName() << " into RQ" << std::endl;
         }
         
         /* moves process at the front of queue to the back and resets quantum counter */
@@ -76,22 +75,20 @@ class RR {
           ready.pop();
           ready.push(temp);
           sysQuantum = quantum;
-          
-          std::cout << "Moved " << temp.getName() << " to back of queue; ";
-          std::cout << "current process is now " << ready.front().getName() << std::endl;
         }
         
         if (!ready.empty()) {
           ready.front().processing();   // execution of process
 
-          std::cout << ready.front().getName() << " now has length ";
-          std::cout << ready.front().getLength() << std::endl;
+          // display purposes, multiples 2 to ID to find number of spaces
+          int spacing = 2 * (ready.front().getID());
+          for (int i = 0; i < spacing; i++) std::cout << " ";
+          std::cout << "X" << std::endl;
         }
-        if (ready.front().getLength() == 0) {
-          
-          std::cout << ready.front().getName() << " completed" << std::endl;
 
-          ready.pop();  // process removed if completed
+        // process is removed if completed
+        if (ready.front().getLength() == 0) {
+          ready.pop();
           sysQuantum = quantum + 1;
         }
 
@@ -99,6 +96,4 @@ class RR {
         sysQuantum--;
       } while (!ready.empty() || !admittance.empty());
     } // end circularQ()
-    
-    void preemption() {};
 };  // end RR
