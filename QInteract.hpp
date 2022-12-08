@@ -6,7 +6,7 @@
 #define Q_INTERACT_HPP
 
 /**
- * @brief places the front of "lose" queue into "gain" queue and removes
+ * @brief pushs the front of "lose" queue into "gain" queue and removes
  * the front element of "lose" queue
  * 
  * @param gain

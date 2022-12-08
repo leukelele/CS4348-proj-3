@@ -25,15 +25,20 @@ int main(int argc, char *argv[]) {
   
   std::string selectedAlgo = argv[2]; // 2nd arguement selecting algo
 
-  /* depending on cli argument, selections algo*/
+  /* depending on cli argument, selects corresponding algo*/
   if (selectedAlgo.compare("RR") == 0) {roundRobin(jobList);}
   else if (selectedAlgo.compare("SRT")) {}
   else if (selectedAlgo.compare("FB")) {}
   else if (selectedAlgo.compare("ALL")) {}
-  else {}
+  else {
+    roundRobin(jobList);
+  }
 }   // end main()
 
 
+// ==========================================================================================
+// DON'T GO PAST THIS POINT, IT'S UGLY
+//===========================================================================================
 /**
  * @brief Reads from file and intiializes a Job class from the information. The class is then 
  * placed in a vector.
@@ -83,7 +88,11 @@ void displayJobNames(std::vector<Job> jobList) {
   }
 } // end displayJobNames()
 
-
+/**
+ * @brief 
+ * 
+ * @param jobList 
+ */
 void roundRobin(std::vector<Job> jobList) {
     RR rr(jobList);
 
@@ -91,10 +100,12 @@ void roundRobin(std::vector<Job> jobList) {
     std::cout << "Enter a nonnegative integer to set quantum ";
     std::cout << "(entering nothing defaults to 2): ";
     
-    /* receives terminal input, and assigns quantum size*/
+    /* receives terminal input, and assigns quantum size */
     std::string input;
     std::getline(std::cin, input);
     if (!input.empty()) rr.requestQuantum(stoi(input));
     
+    /* process and display */
     displayJobNames(jobList);
-}
+    rr.circularQ();
+} // end roundRobin()
