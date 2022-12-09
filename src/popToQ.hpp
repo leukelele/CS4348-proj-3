@@ -1,7 +1,6 @@
 /**
  * @brief in hindsight, a simpler approach might have been to implement templates
  */
-
 #include <queue>
 #include <vector>
 

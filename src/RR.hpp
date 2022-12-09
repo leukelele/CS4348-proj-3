@@ -7,8 +7,9 @@
 
 class RR {
   private:
+    
     std::queue<Job> admittance; // admits the job
-    unsigned int quantum;       // interval for process before preemption, default is 2
+    unsigned int quantum;       // interval for process before preemption, default is 1
     
   public:
     
@@ -36,9 +37,9 @@ class RR {
     } // end acceptJobs()
     
     /**
-     * @brief assigns quantum size, default value is 2
+     * @brief assigns quantum size, default value is 1
      */
-    void requestQuantum(unsigned int size = 2) {
+    void requestQuantum(unsigned int size = 1) {
       quantum = size;
     } // end requestQuantum()
 

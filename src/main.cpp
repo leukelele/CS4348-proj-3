@@ -104,17 +104,18 @@ void displayJobNames(std::vector<Job> jobList) {
 void roundRobin(std::vector<Job> jobList) {
   RR rr(jobList);
 
-  /* prompt for quantum size*/
-  std::cout << "\nRR: Enter a nonnegative integer to set quantum size";
-  std::cout << "(blank input defaults to 2): ";
+  // /* prompt for quantum size*/
+  // std::cout << "\nRR: Enter a nonnegative integer to set quantum size";
+  // std::cout << "(blank input defaults to 1): ";
   
-  /* receives terminal input, and assigns quantum size */
-  std::string input;
-  std::getline(std::cin, input);
-  if (!input.empty()) rr.requestQuantum(stoi(input));
+  // /* receives terminal input, and assigns quantum size */
+  // std::string input;
+  // std::getline(std::cin, input);
+  // if (!input.empty()) rr.requestQuantum(stoi(input));
+  rr.requestQuantum();
   
   /* process and display */
-  std::cout << "ROUND ROBIN:" << std::endl;
+  std::cout << "\nROUND ROBIN:" << std::endl;
   displayJobNames(jobList);
   rr.circularQ();
 } // end roundRobin()
@@ -138,18 +139,27 @@ void shortestRemainingTime(std::vector<Job> jobList) {
 void feedBack(std::vector<Job> jobList) {
   FB fb(jobList);
 
-  /* prompt for quantum size*/
-  std::cout << "\nFB: Enter a nonnegative integer to set quantum size ";
-  std::cout << "(blank input defaults to 2): ";
+  // /* prompt for quantum size*/
+  // std::cout << "\nFB: Enter a nonnegative integer to set quantum size ";
+  // std::cout << "(blank input defaults to 1): ";
   
-  /* retrieves terminal input, and assigns quantum size */
-  std::string input;
-  std::getline(std::cin, input);
-  if (!input.empty()) fb.requestQuantum(stoi(input));
+  // /* retrieves terminal input, and assigns quantum size */
+  // std::string input;
+  // std::getline(std::cin, input);
+  // if (!input.empty()) fb.requestQuantum(stoi(input));
 
+  // /* prompt for quantum size*/
+  // std::cout << "\nFB: Enter a nonnegative integer to set number of queues ";
+  // std::cout << "(blank input defaults to 3): ";
+  
+  // /* retrieves terminal input, and assigns number of queues*/
+  // std::getline(std::cin, input);
+  // if (!input.empty()) fb.requestNumQ(stoi(input));
+  fb.requestNumQ();
+
+  /* displays headers */
   std::cout << "\nFEEDBACK:" << std::endl;
   displayJobNames(jobList);
 
-  
-    
+  fb.QQQ();    
 } // end feedBack()

@@ -7,6 +7,7 @@
 
 class SRT {
   private:
+    
     std::queue<Job> admittance;  // admits jobs from job list
 
   public:
