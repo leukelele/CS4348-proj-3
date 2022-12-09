@@ -113,6 +113,12 @@ void roundRobin(std::vector<Job> jobList) {
     rr.circularQ();
 } // end roundRobin()
 
+/**
+ * @brief prints heading specific to algorithm, then calls class, and subsequent functions
+ * relating to Shortest Remaining Time algorithm
+ * 
+ * @param jobList 
+ */
 void shortestRemainingTime(std::vector<Job> jobList) {
   SRT srt(jobList);
 
@@ -120,5 +126,5 @@ void shortestRemainingTime(std::vector<Job> jobList) {
   std::cout << "\nSHORTEST REMAINING TIME:" << std::endl;
   displayJobNames(jobList);
   
-  srt.shortestTimeQ();
+  srt.shortestTimeQ();  // processing and output
 }
