@@ -120,4 +120,5 @@ void shortestRemainingTime(std::vector<Job> jobList) {
   std::cout << "\nSHORTEST REMAINING TIME:" << std::endl;
   displayJobNames(jobList);
   
+  srt.shortestTimeQ();
 }

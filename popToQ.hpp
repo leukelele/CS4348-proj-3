@@ -11,20 +11,20 @@
 #define POP_TO_QUEUE_HPP
 
 /**
- * VECTOR
+ * QUEUE TO VECTOR
  * @brief pushs the front of "lose" queue into "gain" queue and removes
  * the front element of "lose" queue
  * 
  * @param gain
  * @param lose
  */
-inline void popToQ(std::vector<Job> &gain, std::vector<Job> &lose) {
+inline void popToQ(std::vector<Job> &gain, std::queue<Job> &lose) {
   gain.push_back(lose.front());
-  lose.erase(lose.begin());  
+  lose.pop();
 }
 
 /**
- * QUEUE
+ * QUEUE TO QUEUE
  * @brief pushs the front of "lose" queue into "gain" queue and removes
  * the front element of "lose" queue
  * 
