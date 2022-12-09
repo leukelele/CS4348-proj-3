@@ -85,10 +85,11 @@ class FB {
           nextProc = admittance.front().getAdmitted();
 
           std::cout << "\nadmittance:" << std::endl;
-          display(q);
+          displayContent(q);
         }
         
         int numInQ = 0;
+        
         
         /* at expiration of quantum, places the process in a lower prio queue*/
         if (sysQuantum == 0) {
@@ -101,7 +102,7 @@ class FB {
           sysQuantum = quantum;
 
           std::cout << "\nquantum reset:" << std::endl;
-          display(q);
+          displayContent(q);
 
         }
         
@@ -144,13 +145,20 @@ class FB {
                || !q.at(2).empty() || !admittance.empty());
     } // end QQQ();
     
-    void display(std::vector<priority> q) {
-      int prioSize = q.size();
-      for (int i = 0; i < prioSize; i++) {
-        std::cout << "Priority Queue " << i << ": ";
+    
+    /**
+     * @brief displays the contents of all the queues in provided vector
+     * 
+     * @param q 
+     */
+    void displayContent(std::vector<priority> q) {
 
-        int queueSize = q.at(i).size();
-        for (int j = 0; j < queueSize; j++) {
+      int prioSize = q.size();                      // size of vector
+      for (int i = 0; i < prioSize; i++) {          // traveres through elements of vector
+        std::cout << "Queue " << i << ": ";
+
+        int queueSize = q.at(i).size();          // size of queue at position i in vector
+        for (int j = 0; j < queueSize; j++) {       // traverses queue and prints content
           std::cout << q.at(i).front().getName();
           std::cout << q.at(i).front().getLength();
           q.at(i).pop();
@@ -160,5 +168,5 @@ class FB {
         std::cout << std::endl;
       }
       std::cout << std::endl;
-    }
+    } // end display()
 };
