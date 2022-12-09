@@ -18,8 +18,9 @@
  * @param lose
  */
 inline void popToQ(std::vector<Job> &gain, std::queue<Job> &lose) {
-  gain.push_back(lose.front());
+  Job temp = lose.front();
   lose.pop();
+  gain.push_back(temp);
 }
 
 /**
@@ -31,8 +32,9 @@ inline void popToQ(std::vector<Job> &gain, std::queue<Job> &lose) {
  * @param lose
  */
 inline void popToQ(std::queue<Job> &gain, std::queue<Job> &lose) {
-  gain.push(lose.front());
+  Job temp = lose.front();
   lose.pop();
+  gain.push(temp);
 } // end moveToRQ()
 
 #endif

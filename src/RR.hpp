@@ -70,9 +70,7 @@ class RR {
         
         /* moves process at the front of queue to the back and resets quantum counter */
         if (sysQuantum == 0) {
-          Job temp = ready.front();
-          ready.pop();
-          ready.push(temp);
+          popToQ(ready, ready);
           sysQuantum = quantum;
         }
         

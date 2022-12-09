@@ -79,13 +79,23 @@ class FB {
       /* iterates through queue, until all queus are empty */
       do {
         
+        std::cout << "\nCURRENT COUNTER : " << counter << std::endl;
+        
         /* places admitting process into ready queue at time admitted and resets 
           priority level to 0 (highest priority) */
         if (counter == nextProc) {
           prioLvl = 0;
+          
+          std::cout << "\nLosing " << admittance.front().getName() << " from admittance" << std::endl;
           popToQ(q.at(prioLvl), admittance);
+          
+          std::cout << q.at(prioLvl).back().getName() << " was admitted " << std::endl;
+
           numProc++;
           nextProc = admittance.front().getAdmitted();
+          
+          std::cout << "\nAdmitting " << q.at(prioLvl).back().getName() << std::endl;
+          std::cout << "Next process will be accepted at time: "  << nextProc << std::endl;
 
           std::cout << "\nadmittance:" << std::endl;
           displayContent(q);
