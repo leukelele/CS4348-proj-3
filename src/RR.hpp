@@ -6,7 +6,6 @@
 #include "popToQ.hpp"
 
 class RR {
-  
   private:
     std::queue<Job> admittance; // admits the job
     unsigned int quantum;       // interval for process before preemption, default is 2

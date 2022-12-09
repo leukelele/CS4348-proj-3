@@ -13,11 +13,13 @@
 #include "Job.hpp"
 #include "RR.hpp"
 #include "SRT.hpp"
+#include "FB.hpp"
 
 void fileToVector(std::string, std::vector<Job> &);
 void displayJobNames(std::vector<Job>);
 void roundRobin(std::vector<Job>);
 void shortestRemainingTime(std::vector<Job>);
+void feedBack(std::vector<Job>);
 
 int main(int argc, char *argv[]) {
   
@@ -30,10 +32,13 @@ int main(int argc, char *argv[]) {
   /* depending on cli argument, selects corresponding algo*/
   if (selectedAlgo.compare("RR") == 0) {roundRobin(jobList);}
   else if (selectedAlgo.compare("SRT") == 0) {shortestRemainingTime(jobList);}
-  else if (selectedAlgo.compare("FB") == 0) {}
+  else if (selectedAlgo.compare("FB") == 0) {feedBack(jobList);}
   else if (selectedAlgo.compare("ALL") == 0) {
     roundRobin(jobList);
+    std::cout << "\n" << std::endl;   // divider for visibility
     shortestRemainingTime(jobList);
+    std::cout << "\n" << std::endl;
+    feedBack(jobList);
   }
 }   // end main()
 
@@ -99,7 +104,7 @@ void roundRobin(std::vector<Job> jobList) {
     RR rr(jobList);
 
     /* prompt for quantum size*/
-    std::cout << "Enter a nonnegative integer to set quantum ";
+    std::cout << "\nRR: Enter a nonnegative integer to set quantum size";
     std::cout << "(entering nothing defaults to 2): ";
     
     /* receives terminal input, and assigns quantum size */
@@ -108,7 +113,7 @@ void roundRobin(std::vector<Job> jobList) {
     if (!input.empty()) rr.requestQuantum(stoi(input));
     
     /* process and display */
-    std::cout << "\nROUND ROBIN:" << std::endl;
+    std::cout << "ROUND ROBIN:" << std::endl;
     displayJobNames(jobList);
     rr.circularQ();
 } // end roundRobin()
@@ -127,4 +132,15 @@ void shortestRemainingTime(std::vector<Job> jobList) {
   displayJobNames(jobList);
   
   srt.shortestTimeQ();  // processing and output
+}
+
+void feedBack(std::vector<Job> jobList) {
+
+    /* prompt for quantum size*/
+    std::cout << "\nRR: Enter a nonnegative integer to set quantum size";
+    std::cout << "(entering nothing defaults to 2): ";
+    
+    /* retrieves terminal input, and assigns quantum size */
+    std::string input;
+    std::getline(std::cin, input);
 }
