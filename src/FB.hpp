@@ -41,4 +41,30 @@ class FB {
     void requestQuantum(unsigned int size = 2) {
       quantum = size;
     } // end requestQuantum()
+
+    /**
+     * @brief 
+     */
+    void QQQ() {
+      std::queue<Job> prio1;
+      std::queue<Job> prio2;
+      std::queue<Job> prio3;
+      unsigned int nextProc = admittance.front().getAdmitted();
+      unsigned int sysQuantum = quantum;
+      unsigned int counter = 0;
+
+      do {
+        if (counter == nextProc) {
+          popToQ(prio1, admittance);
+          nextProc = admittance.front().getAdmitted();
+        }
+        
+        if (sysQuantum == 0) {
+
+        }
+
+        counter++;
+      } while (!prio1.empty() || !prio2.empty() || prio3.empty() 
+               || !admittance.empty());
+    } // end QQQ();
 };

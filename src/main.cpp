@@ -102,21 +102,21 @@ void displayJobNames(std::vector<Job> jobList) {
  * @param jobList 
  */
 void roundRobin(std::vector<Job> jobList) {
-    RR rr(jobList);
+  RR rr(jobList);
 
-    /* prompt for quantum size*/
-    std::cout << "\nRR: Enter a nonnegative integer to set quantum size";
-    std::cout << "(entering nothing defaults to 2): ";
-    
-    /* receives terminal input, and assigns quantum size */
-    std::string input;
-    std::getline(std::cin, input);
-    if (!input.empty()) rr.requestQuantum(stoi(input));
-    
-    /* process and display */
-    std::cout << "ROUND ROBIN:" << std::endl;
-    displayJobNames(jobList);
-    rr.circularQ();
+  /* prompt for quantum size*/
+  std::cout << "\nRR: Enter a nonnegative integer to set quantum size";
+  std::cout << "(blank input defaults to 2): ";
+  
+  /* receives terminal input, and assigns quantum size */
+  std::string input;
+  std::getline(std::cin, input);
+  if (!input.empty()) rr.requestQuantum(stoi(input));
+  
+  /* process and display */
+  std::cout << "ROUND ROBIN:" << std::endl;
+  displayJobNames(jobList);
+  rr.circularQ();
 } // end roundRobin()
 
 /**
@@ -133,15 +133,23 @@ void shortestRemainingTime(std::vector<Job> jobList) {
   displayJobNames(jobList);
   
   srt.shortestTimeQ();  // processing and output
-}
+} // end shortestRemainingTime()
 
 void feedBack(std::vector<Job> jobList) {
+  FB fb(jobList);
 
-    /* prompt for quantum size*/
-    std::cout << "\nRR: Enter a nonnegative integer to set quantum size";
-    std::cout << "(entering nothing defaults to 2): ";
+  /* prompt for quantum size*/
+  std::cout << "\nFB: Enter a nonnegative integer to set quantum size ";
+  std::cout << "(blank input defaults to 2): ";
+  
+  /* retrieves terminal input, and assigns quantum size */
+  std::string input;
+  std::getline(std::cin, input);
+  if (!input.empty()) fb.requestQuantum(stoi(input));
+
+  std::cout << "\nFEEDBACK:" << std::endl;
+  displayJobNames(jobList);
+
+  
     
-    /* retrieves terminal input, and assigns quantum size */
-    std::string input;
-    std::getline(std::cin, input);
-}
+} // end feedBack()
