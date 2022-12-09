@@ -1,5 +1,4 @@
 #include <iostream>
-#include <iterator>
 #include <vector>
 #include <queue>
 
@@ -8,7 +7,7 @@
 
 class SRT {
   private:
-    std::queue<Job> admittance;
+    std::queue<Job> admittance;  // admits jobs from job list
 
   public:
     
@@ -45,17 +44,22 @@ class SRT {
      * of shortest algorithm which is implemented with a selection sort algorithm
      */
     void shortestTimeQ() {
-      std::vector<Job> ready;
-      unsigned int nextProc = admittance.front().getAdmitted();
-      unsigned int counter = 0;
+      std::vector<Job> ready;                                     // ready "queue"
+      unsigned int nextProc = admittance.front().getAdmitted();   // time of next process
+      unsigned int counter = 0;                                   // system counter
       
+      /* travereses through queue, that will is rearanged with each addition of a 
+         process, and executes the process with the shortest length*/
       do {
+        
+        /* places admitting process into ready queue at the time it is admitted */
         if (counter == nextProc) {
           popToQ(ready, admittance);
           selectionSort(ready);
           nextProc = admittance.front().getAdmitted();
         }
         
+        /* decrements the time remaining for a process */
         if (!ready.empty()) {
           ready.front().processing();
           
@@ -65,6 +69,7 @@ class SRT {
           std::cout << "X" << std::endl;
         }
         
+        /* removes the element at the front of the queue if completed */
         if (ready.front().getLength() == 0) {
           ready.erase(ready.begin());
         }
