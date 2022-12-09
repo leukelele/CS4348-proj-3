@@ -17,6 +17,11 @@ class SRT {
       acceptJobs(jobList);
     } // end constructor
 
+    /*****************
+     *               *
+     *    MODIFER    *
+     *               *
+     *****************/
     /**
      * @brief admits jobs from jobList into storage
      * 
@@ -28,6 +33,17 @@ class SRT {
       }
     } // end acceptJobs()
     
+    /*******************************************
+     *                                         *
+     *    SHORTEST REMAINING TIME ALGORITHM    *
+     *                                         *
+     *******************************************/
+    /**
+     * @brief shortest remaining time algorithm, which is a scheduling algorithm
+     * that prioritizes the exectuion of the process that takes the least amount of 
+     * time; every admittance of a process into the ready queue requires reranking
+     * of shortest algorithm which is implemented with a selection sort algorithm
+     */
     void shortestTimeQ() {
       std::vector<Job> ready;
       unsigned int nextProc = admittance.front().getAdmitted();
@@ -55,7 +71,7 @@ class SRT {
         
         counter++;
       } while(!ready.empty() || !admittance.empty());
-    } // end circularQ()
+    } // end shortestTimeQ()
     
     /**
      * @brief sorts the algorithm smallest to greatest by comparing each
@@ -78,5 +94,5 @@ class SRT {
         }  
         std::swap(input.at(i), input.at(temp)); // swap for the min val
       }
-    }
+    } // end selectionSort()
 };
