@@ -29,7 +29,8 @@ class RR {
      * @param jobList 
      */
     void acceptJobs(std::vector<Job> jobList) {
-      for (int i = 0; i < jobList.size(); i++) {
+      int listSize = jobList.size();
+      for (int i = 0; i < listSize; i++) {
         admittance.push(jobList.at(i));
       }
     } // end acceptJobs()

@@ -88,8 +88,9 @@ void fileToVector(std::string fileName, std::vector<Job> &jobList) {
 void displayJobNames(std::vector<Job> jobList) {
   
   /* iterates through the vector and calls getter for job name*/
-  for (int i = 0; i < jobList.size(); i++) {
-    if ((i + 1) != jobList.size()) std::cout << jobList.at(i).getName() << " ";
+  int listSize = jobList.size();
+  for (int i = 0; i < listSize; i++) {
+    if ((i + 1) != listSize) std::cout << jobList.at(i).getName() << " ";
     else std::cout << jobList.at(i).getName() << std::endl;
   }
 } // end displayJobNames()
