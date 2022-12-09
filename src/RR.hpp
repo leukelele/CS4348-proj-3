@@ -58,7 +58,7 @@ class RR {
       unsigned int nextProc = admittance.front().getAdmitted();   // time of the next process
       unsigned int counter = 0;                                   // system counter
       
-      /* iterates through queue, remaning on an element for the duration of the quantum, and breaks
+      /* iterates through queue, remaining on an element for the duration of the quantum, and breaks
          when ready queue and admittance queue are empty */
       do {
         
