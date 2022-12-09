@@ -8,9 +8,9 @@
 class FB {
   private:
 
-    typedef std::queue<Job> priority;
-    std::queue<Job> admittance; // admits the job
-    unsigned int quantum;       // interval for process before preemption, default is 2
+    typedef std::queue<Job> priority; // typedef to create number of queues to be stored in a vector
+    std::queue<Job> admittance;       // admits the job
+    unsigned int quantum;             // interval for process before preemption, default is 2
     unsigned int numQ;
     
   public:
@@ -69,7 +69,9 @@ class FB {
         q.push_back(priority());
       }
 
-      unsigned int prioLvl = 0;                                   // priority lvl to access queues
+      unsigned int prioLvl = 0;                                   // current priority lvl to access queues
+      unsigned int numPrioLvl = numQ;                             // number of priority lvls
+      unsigned int numProc = 0;                                   // keeps track of number of process in sys
       unsigned int nextProc = admittance.front().getAdmitted();   // time next process will be admitted
       unsigned int sysQuantum = quantum;                          // quamtum counter
       unsigned int counter = 0;                                   // system counter
@@ -82,38 +84,45 @@ class FB {
         if (counter == nextProc) {
           prioLvl = 0;
           popToQ(q.at(prioLvl), admittance);
+          numProc++;
           nextProc = admittance.front().getAdmitted();
 
           std::cout << "\nadmittance:" << std::endl;
           displayContent(q);
         }
+
+        /* inc prioLvl, if current queue is empty and not already on the lowest prio queue*/
+        if ((q.at(prioLvl).empty()) && (prioLvl < numPrioLvl)) prioLvl++;
         
-        int numInQ = 0;
-        
-        
-        /* at expiration of quantum, places the process in a lower prio queue*/
+        /* at expiration of quantum, does either
+           - continue with current process
+           - places the current process into the next level of prio  */
         if (sysQuantum == 0) {
-          Job temp = q.at(prioLvl).front();     // temporary container for process
-          q.at(prioLvl).pop();                  // removes process in current queue
+          
+          /* if there is no other process in the system, place the only process
+             back into the highest priority and reset prioLvl to 0 (highest prio)*/
+          if (numProc < 2) {
+            popToQ(q.at(0), q.at(prioLvl));
+            prioLvl = 0;
+            
+            std::cout << "\nquantum reset:" << std::endl;
+            displayContent(q);
+          }
 
-          /* check that prioLvl isn't already at the lowest priority */
-          unsigned int numPrio = q.size() - 1;
-          if (prioLvl < numPrio) q.at((prioLvl + 1)).push(temp);
-          sysQuantum = quantum;
+          /* places the process in a lower prio queue */
+          else {
 
-          std::cout << "\nquantum reset:" << std::endl;
-          displayContent(q);
+           /* check that prioLvl isn't already at the lowest priority; places process in
+           the next lowest priority */
+            if (prioLvl < numPrioLvl) popToQ(q.at((prioLvl + 1)), q.at(prioLvl));
+                      
+            sysQuantum = quantum;   // resets quantum
 
+            std::cout << "\nquantum reset:" << std::endl;
+            displayContent(q);
+          }
         }
         
-        // int tempNumQ = numQ;
-        // for (int i = 0; i < tempNumQ; i++) {
-        //   if (!q.at(prioLvl).empty()) {
-        //     q.at(prioLvl).front().processing();
-        //     break;
-        //   }
-        // }
-
         /* execution of process and display on graph; increments priority level if 
            current level is empty */
         if (!q.at(prioLvl).empty()) {
@@ -124,18 +133,11 @@ class FB {
           for (int i = 0; i < spacing; i++) std::cout << " ";
           std::cout << "X" << std::endl;
         }
-        else {
-          prioLvl++;
-          
-          unsigned int qSize = q.size();
-          if (prioLvl == qSize) {
-            prioLvl = 0;
-          }
-        }
         
         /* exe process in high prio q*/
         if (q.at(prioLvl).front().getLength() == 0) {
           q.at(prioLvl).pop();
+          numProc--;
           sysQuantum = quantum + 1;
         }
         

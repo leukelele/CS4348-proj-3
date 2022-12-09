@@ -57,7 +57,7 @@ class SRT {
         /* places admitting process into ready queue at the time it is admitted */
         if (counter == nextProc) {
           popToQ(ready, admittance);
-          selectionSort(ready);
+          selectionSort(ready);                   // reorganize so shortest process executes first
           nextProc = admittance.front().getAdmitted();
         }
         
@@ -65,7 +65,7 @@ class SRT {
         if (!ready.empty()) {
           ready.front().processing();
           
-          // display purposes, multiplies 2 to ID to find number of spaces for "X"
+          // display purposes, multiplies 2 to ID to find number of spaces before placing "X"
           int spacing = 2 * (ready.front().getID());
           for (int i = 0; i < spacing; i++) std::cout << " ";
           std::cout << "X" << std::endl;
