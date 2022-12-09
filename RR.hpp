@@ -9,7 +9,6 @@ class RR {
   
   private:
     std::queue<Job> admittance; // admits the job
-    std::queue<int> ID;         // help for displaying execution of processes
     unsigned int quantum;       // interval for process before preemption, default is 2
     
   public:
@@ -54,7 +53,6 @@ class RR {
      */
     void circularQ() {
       std::queue<Job> ready;                                      // ready queue for execution of processes
-      std::queue<int> identifier;                                 // keep track of elements as they moved through ready queue
       unsigned int sysQuantum = quantum;                          // interval for job until preemption
       unsigned int nextProc = admittance.front().getAdmitted();   // time of the next process
       unsigned int counter = 0;                                   // system counter
@@ -77,18 +75,32 @@ class RR {
           sysQuantum = quantum;
         }
         
+        // if there is a process in ready queue, execute process
         if (!ready.empty()) {
           ready.front().processing();   // execution of process
 
-          // display purposes, multiples 2 to ID to find number of spaces
+          // display purposes, multiplies 2 to ID to find number of spaces for "X"
           int spacing = 2 * (ready.front().getID());
           for (int i = 0; i < spacing; i++) std::cout << " ";
           std::cout << "X" << std::endl;
         }
 
-        // process is removed if completed
+        // process is removed once completed
         if (ready.front().getLength() == 0) {
           ready.pop();
+          
+          /**
+           * I was stuck here; though, it has been fixed. Whenever the quantum counter decrements to 0,
+           * the execution of a process is paused for the next process in ready queue. The issue, however,
+           * was that if a process were to complete while the duration of the quantum has yet to expire,
+           * the process would swap to the process next in queue without resetting the quantum counter.
+           * 
+           * I then wondered if this was actually how Round Robin was supposed to work, but ultimately 
+           * some internet researching suggested otherwise.
+           * 
+           * TLDR: Issue with quantum counter where it did not reset after when process is determined
+           * complete and resulted in processes sharing quantum interval.
+           **/
           sysQuantum = quantum + 1;
         }
 

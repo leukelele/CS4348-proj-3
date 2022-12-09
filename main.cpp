@@ -17,6 +17,7 @@
 void fileToVector(std::string, std::vector<Job> &);
 void displayJobNames(std::vector<Job>);
 void roundRobin(std::vector<Job>);
+void shortestRemainingTime(std::vector<Job>);
 
 int main(int argc, char *argv[]) {
   
@@ -28,11 +29,11 @@ int main(int argc, char *argv[]) {
 
   /* depending on cli argument, selects corresponding algo*/
   if (selectedAlgo.compare("RR") == 0) {roundRobin(jobList);}
-  else if (selectedAlgo.compare("SRT")) {}
-  else if (selectedAlgo.compare("FB")) {}
-  else if (selectedAlgo.compare("ALL")) {}
-  else {
+  else if (selectedAlgo.compare("SRT") == 0) {shortestRemainingTime(jobList);}
+  else if (selectedAlgo.compare("FB") == 0) {}
+  else if (selectedAlgo.compare("ALL") == 0) {
     roundRobin(jobList);
+    shortestRemainingTime(jobList);
   }
 }   // end main()
 
@@ -112,6 +113,11 @@ void roundRobin(std::vector<Job> jobList) {
     rr.circularQ();
 } // end roundRobin()
 
-void shortRemainingTime(std::vector<Job> jobList) {
+void shortestRemainingTime(std::vector<Job> jobList) {
   SRT srt(jobList);
+
+  /* header for output*/
+  std::cout << "\nSHORTEST REMAINING TIME:" << std::endl;
+  displayJobNames(jobList);
+  
 }
