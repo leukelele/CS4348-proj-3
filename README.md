@@ -8,7 +8,8 @@ The following command executes the program:
 ```bash
 $ ./proj3 FILE ALGO
 # The program requires two additional arguments to function properly: the file name (including
-# the file extension) and the initials of select scheduling algorithms. The available algorithms are:
+# the file extension) and the initials of select scheduling algorithms. The available algorithms 
+# are:
 # - RR (Round Robin)
 # - SRT (Shortest Remaining Time)
 # - FB (Feedback)
