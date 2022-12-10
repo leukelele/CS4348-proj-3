@@ -1,5 +1,6 @@
 /**
- * @brief in hindsight, a simpler approach might have been to implement templates
+ * @brief contains functions that pops the element of a queue and pushes it into another
+ * in hindsight, a simpler approach might have been to implement templates
  */
 #include <queue>
 #include <vector>
