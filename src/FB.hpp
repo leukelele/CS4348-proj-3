@@ -153,6 +153,7 @@ class FB {
             /* check that prioLvl isn't already at the lowest priority; places process in
                the next lowest priority */
             if (prioLvl < numPrioLvl) popToQ(q.at((prioLvl + 1)), q.at(prioLvl));
+            else if (prioLvl == numPrioLvl) popToQ(q.at(prioLvl), q.at(prioLvl));
                       
             // std::cout << "\nQUANTUM RESET" << std::endl;
             // displayContent(q);
