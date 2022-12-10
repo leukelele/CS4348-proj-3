@@ -1,3 +1,8 @@
+/**
+ * @file FB.hpp
+ * @brief collects preliminary information, then processes the information to produce a graphic
+ * that reflects the feedback scheduler algorithm
+ */
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -70,8 +75,8 @@ class FB {
       }
 
       unsigned int prioLvl = 0;                                   // current priority lvl to access queues
-      unsigned int numPrioLvl = numQ - 1;                         // number of priority lvls
-      unsigned int numProc = 0;                                   // number processes in system
+      unsigned int numPrioLvl = numQ - 1;                         // number of priority lvls (-1 bc start counting from 0)
+      unsigned int numProc = 0;                                   // number of processes in system
       unsigned int nextProc = admittance.front().getAdmitted();   // time next process will be admitted
       unsigned int sysQuantum = quantum;                          // quamtum counter
       unsigned int counter = 0;                                   // system counter
@@ -79,26 +84,13 @@ class FB {
       /* iterates through queue, until all queues are empty */
       do {
         
-        // std::cout << "\nCURRENT COUNTER: " << counter << std::endl;
-        
         /* places admitting process into ready queue at time admitted and resets 
           priority level to 0 (highest priority) */
         if (counter == nextProc) {
           prioLvl = 0;
-
           popToQ(q.at(prioLvl), admittance);
           numProc++;
-          
-          // std::cout << "Size of queue at prioLvl: " << q.at(prioLvl).size() << std::endl;;
-          // std::cout << q.at(prioLvl).back().getName() << " was admitted " << std::endl;
-          // std::cout << "Number of processes in system: " << numProc << std::endl;
-
           nextProc = admittance.front().getAdmitted();
-          
-          // std::cout << "Next process will be accepted at time: "  << nextProc << std::endl;
-
-          // std::cout << "\nADMITTANCE" << std::endl;
-          // displayContent(q);
         }
         
         /* if there is are no processes in the current queue, iterate to the lower prio queue */
@@ -121,18 +113,9 @@ class FB {
             numProc--;
             sysQuantum = quantum;
           }
-          
-          // /* check that prioLvl isn't already at the lowest priority; places process in
-          //    the next lowest priority */
-          // else {
-          //   if (prioLvl < numPrioLvl) popToQ(q.at((prioLvl + 1)), q.at(prioLvl));
-          // }
-          
-          // std::cout << "EXECUTION" << std::endl;
-          // displayContent(q);
         }
 
-        /* at expiration of quantum, does either
+        /* at expiration of quantum (does either):
            - continue with current process
            - places the current process into the next level of prio  */
         if (sysQuantum == 0) {
@@ -142,21 +125,15 @@ class FB {
           if ((numProc < 2) && ((counter + 1) != nextProc)) {
             popToQ(q.at(0), q.at(prioLvl));
             prioLvl = 0;
-            
-            // std::cout << "\nONLY ONE PROCESS" << std::endl;
-            // displayContent(q);
           }
 
           /* places the process in a lower prio queue */
           else {
 
             /* check that prioLvl isn't already at the lowest priority; places process in
-               the next lowest priority */
+               the next lowest priority or process remains at the lowest priority queue*/
             if (prioLvl < numPrioLvl) popToQ(q.at((prioLvl + 1)), q.at(prioLvl));
             else if (prioLvl == numPrioLvl) popToQ(q.at(prioLvl), q.at(prioLvl));
-                      
-            // std::cout << "\nQUANTUM RESET" << std::endl;
-            // displayContent(q);
           }
 
           sysQuantum = quantum; // resets quantum

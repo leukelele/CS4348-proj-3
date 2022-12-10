@@ -1,3 +1,8 @@
+/**
+ * @file FB.hpp
+ * @brief collects preliminary information, then processes the information to produce a graphic
+ * that reflects the round robin scheduler algorithm
+ */
 #include <iostream>
 #include <vector>
 #include <queue>

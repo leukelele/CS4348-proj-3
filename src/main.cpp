@@ -4,7 +4,6 @@
  * Time, and Feedback. Programm accepts two parameters upon execution:
  * - file: text file with jobs
  * - selected algorithm: RR, SRT, FB, or all algorithms
- * 
  */
 #include <iostream>
 #include <fstream>
@@ -40,6 +39,7 @@ int main(int argc, char *argv[]) {
     std::cout << "\n" << std::endl;
     feedBack(jobList);
   }
+  else {std::cout << "The 2nd argument does not match with: RR, SRT, FB, or ALL" << std::endl;}
 }   // end main()
 
 
@@ -112,7 +112,8 @@ void roundRobin(std::vector<Job> jobList) {
   // std::string input;
   // std::getline(std::cin, input);
   // if (!input.empty()) rr.requestQuantum(stoi(input));
-  rr.requestQuantum();
+
+  rr.requestQuantum();    // default quantum size is 1
   
   /* process and display */
   std::cout << "\nROUND ROBIN:" << std::endl;
@@ -136,6 +137,12 @@ void shortestRemainingTime(std::vector<Job> jobList) {
   srt.shortestTimeQ();  // processing and output
 } // end shortestRemainingTime()
 
+/**
+ * @brief prints headings specfic to FB algorithm, then processes information provided by
+ * job list, and displays the results
+ * 
+ * @param jobList 
+ */
 void feedBack(std::vector<Job> jobList) {
   FB fb(jobList);
 
@@ -155,11 +162,13 @@ void feedBack(std::vector<Job> jobList) {
   // /* retrieves terminal input, and assigns number of queues*/
   // std::getline(std::cin, input);
   // if (!input.empty()) fb.requestNumQ(stoi(input));
-  fb.requestNumQ();
+
+  fb.requestNumQ();       // default number of queues is 3
+  fb.requestQuantum();    // default quantum size is 1
 
   /* displays headers */
   std::cout << "\nFEEDBACK:" << std::endl;
   displayJobNames(jobList);
 
-  fb.QQQ();    
+  fb.QQQ();    // processing and output
 } // end feedBack()
