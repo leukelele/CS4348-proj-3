@@ -15,6 +15,7 @@ $ ./proj3 FILE ALGO
 # - ALL (selects all algorithms above)
 # *Replace the parameters with an argument
 ```
+Additioanlly, the text file should be formatted such that each line as a job name, an arrival time, and a duration in order, tab-delimited. The job names should be ordered alphabetically, with the first letter at the top. The arrival times should be in order, with the first job beginning at time 0.
 
 To clean up the files, use the following command:
 ```bash
