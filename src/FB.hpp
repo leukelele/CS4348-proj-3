@@ -11,7 +11,7 @@ class FB {
     typedef std::queue<Job> priority; // typedef to create number of queues to be stored in a vector
     std::queue<Job> admittance;       // admits the job
     unsigned int quantum;             // interval for process before preemption, default is 2
-    unsigned int numQ;
+    unsigned int numQ;                // number of queues
     
   public:
     
@@ -70,69 +70,68 @@ class FB {
       }
 
       unsigned int prioLvl = 0;                                   // current priority lvl to access queues
-      unsigned int numPrioLvl = numQ;                             // number of priority lvls
-      unsigned int numProc = 0;                                   // keeps track of number of process in sys
+      unsigned int numPrioLvl = numQ - 1;                         // number of priority lvls
+      unsigned int numProc = 0;                                   // number processes in system
       unsigned int nextProc = admittance.front().getAdmitted();   // time next process will be admitted
       unsigned int sysQuantum = quantum;                          // quamtum counter
       unsigned int counter = 0;                                   // system counter
 
-      /* iterates through queue, until all queus are empty */
+      /* iterates through queue, until all queues are empty */
       do {
         
-        std::cout << "\nCURRENT COUNTER : " << counter << std::endl;
+        // std::cout << "\nCURRENT COUNTER: " << counter << std::endl;
         
         /* places admitting process into ready queue at time admitted and resets 
           priority level to 0 (highest priority) */
         if (counter == nextProc) {
           prioLvl = 0;
-          
-          std::cout << "\nLosing " << admittance.front().getName() << " from admittance" << std::endl;
-          popToQ(q.at(prioLvl), admittance);
-          
-          std::cout << q.at(prioLvl).back().getName() << " was admitted " << std::endl;
 
+          popToQ(q.at(prioLvl), admittance);
           numProc++;
+          
+          // std::cout << "Size of queue at prioLvl: " << q.at(prioLvl).size() << std::endl;;
+          // std::cout << q.at(prioLvl).back().getName() << " was admitted " << std::endl;
+          // std::cout << "Number of processes in system: " << numProc << std::endl;
+
           nextProc = admittance.front().getAdmitted();
           
-          std::cout << "\nAdmitting " << q.at(prioLvl).back().getName() << std::endl;
-          std::cout << "Next process will be accepted at time: "  << nextProc << std::endl;
+          // std::cout << "Next process will be accepted at time: "  << nextProc << std::endl;
 
-          std::cout << "\nadmittance:" << std::endl;
+          std::cout << "\nADMITTANCE" << std::endl;
           displayContent(q);
         }
 
-        /* inc prioLvl, if current queue is empty and not already on the lowest prio queue*/
-        if ((q.at(prioLvl).empty()) && (prioLvl < numPrioLvl)) prioLvl++;
-        
         /* at expiration of quantum, does either
            - continue with current process
            - places the current process into the next level of prio  */
         if (sysQuantum == 0) {
           
           /* if there is no other process in the system, place the only process
-             back into the highest priority and reset prioLvl to 0 (highest prio)*/
+             back into the highest priority and reset prioLvl to 0 (highest prio) */
           if (numProc < 2) {
             popToQ(q.at(0), q.at(prioLvl));
             prioLvl = 0;
             
-            std::cout << "\nquantum reset:" << std::endl;
+            std::cout << "\nONLY ONE PROCESS" << std::endl;
             displayContent(q);
+            
+            sysQuantum = 0; // resets quantum
           }
 
           /* places the process in a lower prio queue */
           else {
 
-           /* check that prioLvl isn't already at the lowest priority; places process in
-           the next lowest priority */
+            /* check that prioLvl isn't already at the lowest priority; places process in
+               the next lowest priority */
             if (prioLvl < numPrioLvl) popToQ(q.at((prioLvl + 1)), q.at(prioLvl));
                       
             sysQuantum = quantum;   // resets quantum
 
-            std::cout << "\nquantum reset:" << std::endl;
+            std::cout << "\nQUANTUM RESET" << std::endl;
             displayContent(q);
           }
         }
-        
+
         /* execution of process and display on graph; increments priority level if 
            current level is empty */
         if (!q.at(prioLvl).empty()) {
@@ -142,10 +141,22 @@ class FB {
           int spacing = 2 * (q.at(prioLvl).front().getID());
           for (int i = 0; i < spacing; i++) std::cout << " ";
           std::cout << "X" << std::endl;
+          
+          /* check that prioLvl isn't already at the lowest priority; places process in
+             the next lowest priority */
+          if (prioLvl < numPrioLvl) popToQ(q.at((prioLvl + 1)), q.at(prioLvl));
+
+          
+          std::cout << "EXECUTION" << std::endl;
+          displayContent(q);
         }
-        
-        /* exe process in high prio q*/
+
+        /* inc prioLvl, if current queue is empty and not already on the lowest prio queue*/
+        if ((q.at(prioLvl).empty()) && (prioLvl < numPrioLvl)) prioLvl++;
+      
+        /* exe process in high prio q */
         if (q.at(prioLvl).front().getLength() == 0) {
+          std::cout << "Completion of process " << q.at(prioLvl).front().getName() << std::endl;
           q.at(prioLvl).pop();
           numProc--;
           sysQuantum = quantum + 1;
