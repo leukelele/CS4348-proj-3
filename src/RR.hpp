@@ -77,6 +77,7 @@ class RR {
         // if there is a process in ready queue, execute process
         if (!ready.empty()) {
           ready.front().processing();   // execution of process
+          sysQuantum--;
 
           // display purposes, multiplies 2 to ID to find number of spaces for "X"
           int spacing = 2 * (ready.front().getID());
@@ -100,11 +101,10 @@ class RR {
            * TLDR: Issue with quantum counter where it did not reset after when process is determined
            * complete and resulted in processes sharing quantum interval.
            **/
-          sysQuantum = quantum + 1;
+          sysQuantum = quantum;
         }
 
         counter++;
-        sysQuantum--;
       } while (!ready.empty() || !admittance.empty());
     } // end circularQ()
 };  // end RR

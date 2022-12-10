@@ -97,8 +97,39 @@ class FB {
           
           // std::cout << "Next process will be accepted at time: "  << nextProc << std::endl;
 
-          std::cout << "\nADMITTANCE" << std::endl;
-          displayContent(q);
+          // std::cout << "\nADMITTANCE" << std::endl;
+          // displayContent(q);
+        }
+        
+        /* if there is are no processes in the current queue, iterate to the lower prio queue */
+        while ((q.at(prioLvl).empty()) && (prioLvl < numPrioLvl)) prioLvl++;
+
+        /* execution of process and display on graph; increments priority level if 
+           current level is empty */
+        if (!q.at(prioLvl).empty()) {
+          q.at(prioLvl).front().processing();
+          sysQuantum--;
+          
+          // display purposes, multiplies 2 to ID to find number of spaces for "X"
+          int spacing = 2 * (q.at(prioLvl).front().getID());
+          for (int i = 0; i < spacing; i++) std::cout << " ";
+          std::cout << "X" << std::endl;
+          
+          /* remove process if completed */
+          if (q.at(prioLvl).front().getLength() == 0) {
+            q.at(prioLvl).pop();
+            numProc--;
+            sysQuantum = quantum;
+          }
+          
+          // /* check that prioLvl isn't already at the lowest priority; places process in
+          //    the next lowest priority */
+          // else {
+          //   if (prioLvl < numPrioLvl) popToQ(q.at((prioLvl + 1)), q.at(prioLvl));
+          // }
+          
+          // std::cout << "EXECUTION" << std::endl;
+          // displayContent(q);
         }
 
         /* at expiration of quantum, does either
@@ -108,14 +139,12 @@ class FB {
           
           /* if there is no other process in the system, place the only process
              back into the highest priority and reset prioLvl to 0 (highest prio) */
-          if (numProc < 2) {
+          if ((numProc < 2) && ((counter + 1) != nextProc)) {
             popToQ(q.at(0), q.at(prioLvl));
             prioLvl = 0;
             
-            std::cout << "\nONLY ONE PROCESS" << std::endl;
-            displayContent(q);
-            
-            sysQuantum = 0; // resets quantum
+            // std::cout << "\nONLY ONE PROCESS" << std::endl;
+            // displayContent(q);
           }
 
           /* places the process in a lower prio queue */
@@ -125,45 +154,15 @@ class FB {
                the next lowest priority */
             if (prioLvl < numPrioLvl) popToQ(q.at((prioLvl + 1)), q.at(prioLvl));
                       
-            sysQuantum = quantum;   // resets quantum
-
-            std::cout << "\nQUANTUM RESET" << std::endl;
-            displayContent(q);
+            // std::cout << "\nQUANTUM RESET" << std::endl;
+            // displayContent(q);
           }
+
+          sysQuantum = quantum; // resets quantum
         }
 
-        /* execution of process and display on graph; increments priority level if 
-           current level is empty */
-        if (!q.at(prioLvl).empty()) {
-          q.at(prioLvl).front().processing();
-          
-          // display purposes, multiplies 2 to ID to find number of spaces for "X"
-          int spacing = 2 * (q.at(prioLvl).front().getID());
-          for (int i = 0; i < spacing; i++) std::cout << " ";
-          std::cout << "X" << std::endl;
-          
-          /* check that prioLvl isn't already at the lowest priority; places process in
-             the next lowest priority */
-          if (prioLvl < numPrioLvl) popToQ(q.at((prioLvl + 1)), q.at(prioLvl));
-
-          
-          std::cout << "EXECUTION" << std::endl;
-          displayContent(q);
-        }
-
-        /* inc prioLvl, if current queue is empty and not already on the lowest prio queue*/
-        if ((q.at(prioLvl).empty()) && (prioLvl < numPrioLvl)) prioLvl++;
-      
-        /* exe process in high prio q */
-        if (q.at(prioLvl).front().getLength() == 0) {
-          std::cout << "Completion of process " << q.at(prioLvl).front().getName() << std::endl;
-          q.at(prioLvl).pop();
-          numProc--;
-          sysQuantum = quantum + 1;
-        }
-        
+       
         counter++;
-        sysQuantum--;
       } while (!q.at(0).empty() || !q.at(1).empty() 
                || !q.at(2).empty() || !admittance.empty());
     } // end QQQ();
